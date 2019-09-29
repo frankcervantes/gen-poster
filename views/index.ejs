@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="project-cont">
+    <div id="form-cont">
+      <div id="form">
+        <div id="title" class="group">
+          <input name="title" type="text" required="required">
+          <label>Title</label>
+        </div>
+        <div id="summary" class="group">
+          <textarea name="summary" type="textarea" rows="5" required="required"></textarea>
+          <label>Summary</label>
+        </div>
+        <div id="image" class="group">
+          <input type="file" id="files" type="file" accept="image/*" name="photo" />
+          <label class="button" for="files"><i class="fa fa-cloud-upload" aria-hidden="true"></i></label>
+        </div>
+        <div id="submit">
+          <button id="submit-btn">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  const Submit = document.getElementById('submit-btn');
+  function sanitizeString(str){
+      str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
+      return str.trim();
+  }
+  Submit.addEventListener('click', (e) => {
+    let data = {};
+    let image = document.querySelector('input[name="photo"]').files[0];
+    let title = document.querySelector('input[name="title"]').value;
+    let summary = document.querySelector('textarea[name="summary"]').value;
+    if (image) {
+      data['photo'] = image;
+    }
+    data['title'] = sanitizeString(title);
+    data['summary'] = sanitizeString(summary);
+    console.log(sanitizeString(data['summary']))
+
+    sendData(data);
+    // e.preventDefault();
+  });
+
+  let sendData = (data) => {
+    let formData = new FormData();
+    for (let name in data) {
+      formData.append(name, data[name]);
+    }
+
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    }).then((resp) => resp.json()) // Transform the data into json
+      .then(function (data) {
+        window.location.replace('/poster/' + data.id);
+      })
+  }
+</script>
+
+</html>

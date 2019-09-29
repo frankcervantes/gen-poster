@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap')
+
+@font-face
+    font-family: "AvenirNext";
+    src: url('../fonts/AvenirNextLTPro-Regular.ttf');
+    font-weight: 100;
+
+@font-face 
+    font-family: "AvenirNext";
+    src: url('../fonts/AvenirNextLTPro-Medium.ttf');
+    font-weight: 500;
+
+@font-face
+    font-family: "AvenirNext";
+    src: url('../fonts/AvenirNextLTPro-Bold.ttf');
+    font-weight: 700;
+
+$bg-color: #424242
+$hl-color: #2196F3
+$muted-color: mix(white, $bg-color, 70%)
+$trans-time: 300ms
+$width: 320px
+
+body
+  padding: 50px
+  font: 14px "AvenirNext", Helvetica, Arial, sans-serif
+
+canvas
+  position: absolute
+  z-index: -1
+
+#poster-cont
+  width: 1020px
+  height: 1368px
+  margin: 0 auto
+  position: relative
+  background-repeat: no-repeat
+
+  h1
+    font-size: 130px;
+    text-align: center;
+
+  #profile-pic
+    padding-top: 90px
+    position: relative
+
+    #img-container
+      height: 586px
+      width: 764px
+      margin: 0 auto
+      background-repeat: no-repeat
+      background-size: cover
+      background-position: center
+
+    .blend
+      mix-blend-mode: screen;
+      height: auto;
+      position: absolute;
+      top: 545px;
+      line-height: 105px;
+
+  #text-container
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: absolute;
+    bottom: 140px;
+    width: 100%;
+    p
+      width: 336px
+      font-size: 22px
+      line-height: 35px
+      width: 336px
+      font-size: 25px
+      font-weight: 100
+      line-height: 35px
+
+      &:first-child
+        margin-right: 50px
+
+#project-cont
+  .group 
+    position: relative
+
+  #form-cont
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)
+    margin: 0 auto
+    width: 525px
+    height: 600px
+    position: relative
+
+    h1
+      position: relative;
+      left: 22px;
+      top: 24px;
+      font-size: 68px;
+      color: white
+      z-index: 1
+
+    #form
+      background-color: white;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      position: absolute;
+      top: 64px;
+      left: 80px;
+      width: 462px;
+      height: 440px;
+      padding-left: 50px;
+  
+      #submit
+        float: right
+        width: 130px
+        height: 38px
+        position: relative
+        top: 75px
+        right: 91px
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2)
+        font-weight: bold
+
+        button
+          width: 100%
+          height: 100%
+          background-color: white
+          border: none
+          border-radius: 5px
+          transition: all 0.3s ease 0s;
+
+          &:hover
+            background-color: rgba(9,9,121,1)
+            color: white
+            cursor: pointer
+            background-color: rgba(9,9,121,1)
+            box-shadow: 0px 15px 20px rgba(9,9,121,1)
+            color: #fff
+
+      #image
+        input
+          display: none
+        label 
+          font-family: 'Roboto', sans-serif;
+          font-size: 35px;
+          text-transform: uppercase;
+          letter-spacing: 2.5px;
+          font-weight: 500;
+          color: #000;
+          background-color: #fff;
+          border: none;
+          border-radius: 45px;
+          box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease 0s;
+          cursor: pointer;
+          outline: none;
+          padding: 10px 11px;
+
+        label:hover
+          background-color: rgba(9,9,121,1)
+          box-shadow: 0px 15px 20px rgba(9,9,121,1)
+          color: #fff
+          transform: translateY(-7px)
+      
+      .group
+        margin-top: 60px
+
+      #title, #summary
+        input,
+        textarea
+          background: none;
+          color: #a0aec0;
+          font-size: 18px;
+          padding: 10px 10px 10px 5px;
+          display: block;
+          width: 320px;
+          border: none;
+          border-radius: 0;
+          border-bottom: 1px solid #a0aec0;
+          &:focus
+            outline: none
+
+          &:focus ~ label,
+          &:valid ~ label
+            top: -14px
+            font-size: 12px
+            color: rgba(9,9,121,1)
+
+          &:focus ~ .bar:before
+            width: $width
+          
+        label
+          color: #a0aec0;
+          font-size: 16px;
+          font-weight: normal;
+          position: absolute;
+          pointer-events: none;
+          left: 5px;
+          top: 10px;
+          transition: 300ms ease all;
+      

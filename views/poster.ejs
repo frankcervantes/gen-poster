@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="/scripts/vibrant.js"></script>
+</head>
+
+<body>
+  <div id="poster-cont">
+    <canvas id="canvas"></canvas>
+    <div id="profile-pic">
+      <div id="img-container"></div>
+      <div class="blend">
+        <h1></h1>
+      </div>
+    </div>
+
+    <div id="text-container">
+    </div>
+  </div>
+</body>
+<script>
+
+  let image = "<%= image %>";
+
+  const Title = "<%= title %>";
+  const Summary = "<%= summary %>";
+  const Photo = "data:image/png;base64," + image;
+  const Container = document.getElementById('poster-cont');
+  const Image = document.getElementById('img-container');
+  const Header = document.getElementsByTagName('h1')[0];
+  const Text = document.getElementById('text-container');
+  Image.style.setProperty('background-image', 'url(' + Photo + ')');
+
+  const addParagraph = (text) => {
+    const LIMIT = 2;
+    const it = Math.ceil(text.length / 255);
+    for (let i = 0; i < LIMIT; i++) {
+      const p = document.createElement('p');
+      p.textContent = text.slice(i * 255, (i + 1) * 255);
+      Text.appendChild(p);
+    }
+  }
+  addParagraph(Summary);
+
+  const randomElement = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)]
+  }
+
+  const getWeight = () => {
+    let weights = ['100', '500', '700'];
+    return randomElement(weights);
+  };
+
+  Title.split('').forEach((letter) => {
+    const span = document.createElement('span');
+    span.textContent = letter;
+    span.style.fontWeight = getWeight();
+    Header.appendChild(span);
+  });
+
+  let payload = {}
+  Vibrant.from(Photo).getPalette().then((palette) => {
+    Header.style.setProperty('color', 'rgb(' + palette['LightMuted']._rgb.join(',') + ')');
+    Text.style.setProperty('color', 'rgb(' + palette['LightMuted']._rgb.join(',') + ')');
+    let colors = ['DarkMuted', 'DarkVibrant', 'LightMuted', 'LightVibrant', 'Muted', 'Vibrant'].forEach((key) => {
+      if (!palette[key]) return;
+      var block = document.createElement('div');
+      document.body.appendChild(block);
+      block.style.setProperty('height', 100 + 'px');
+      block.style.setProperty('width', 100 + 'px');
+      block.style.setProperty('background-color', 'rgb(' + palette[key]._rgb.join(',') + ')');
+      block.style.setProperty('display', 'inline-block');
+      payload[key] = palette[key]._rgb
+    });
+
+    Sketch.init({
+      payload
+    });
+  });
+
+  const Sketch = (() => {
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext("2d");
+    let colors = {};
+
+    let drawRectangle = (n) => {
+      let palette = [colors['DarkVibrant'], colors['LightVibrant']];
+      let offset = 400;
+      let Width = canvas.width + offset;
+      let Height = canvas.height + offset;
+      let rectHeight = Height / n;
+
+      let cx = 0.5 * (Width / 2);
+      let cy = 0.5 * (Height / 2);
+
+      context.translate(cx, cy);
+      context.rotate(-10 * Math.PI / 180);
+      context.translate(-cx, -cy);
+
+      for (let i = 0; i < n; i++) {
+        let y = i * (rectHeight);
+        context.beginPath();
+        let color = palette[i % 2];
+        context.fillStyle = 'rgb(' + color + ')';
+        context.rect(-offset / 2, y - (offset / 2), Width, rectHeight);
+        context.fill();
+      }
+    }
+
+    return {
+      init: (data) => {
+        colors = data.payload;
+        canvas.width = Container.offsetWidth;
+        canvas.height = Container.offsetHeight;
+        drawRectangle(14);
+      }
+    }
+  })();
+</script>
+
+</html>
